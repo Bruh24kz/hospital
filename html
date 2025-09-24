@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nome do Hospital - Cuidado e Confiança</title>
+    </head>
+<body>
+
+    <header>
+        <h1>Nome do Hospital</h1>
+        <nav>
+            <ul>
+                <li><a href="#inicio">Início</a></li>
+                <li><a href="#servicos">Serviços</a></li>
+                <li><a href="#especialidades">Especialidades</a></li>
+                <li><a href="#contato">Contato</a></li>
+                <li><a href="#agendamento" class="btn-agendar">Agendar Consulta</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="inicio" class="hero">
+            <h2>Bem-vindo ao Nome do Hospital</h2>
+            <p>Seu centro de saúde e bem-estar. Cuidando de você e de sua família com excelência e dedicação.</p>
+            <a href="#agendamento" class="btn-principal">Agende sua Consulta Hoje</a>
+        </section>
+
+        <section id="servicos">
+            <h2>Nossos Serviços</h2>
+            <div>
+                <h3>Atendimento de Emergência 24h</h3>
+                <p>Pronto-socorro completo para todas as urgências e emergências médicas.</p>
+            </div>
+            <div>
+                <h3>Internação e Cirurgia</h3>
+                <p>Instalações modernas e equipe cirúrgica altamente qualificada.</p>
+            </div>
+            <div>
+                <h3>Exames e Diagnóstico</h3>
+                <p>Laboratório e centro de imagens com tecnologia de ponta.</p>
+            </div>
+        </section>
+
+        <section id="especialidades">
+            <h2>Especialidades Médicas</h2>
+            <ul>
+                <li>Cardiologia</li>
+                <li>Pediatria</li>
+                <li>Ortopedia</li>
+                <li>Ginecologia e Obstetrícia</li>
+                <li>Clínica Geral</li>
+                <li>...e mais.</li>
+            </ul>
+        </section>
+
+        <section id="agendamento">
+            <h2>Agendamento Online</h2>
+            <p>Preencha o formulário abaixo para solicitar um agendamento. Entraremos em contato em breve.</p>
+            <form action="/submit-agendamento" method="POST">
+                <label for="nome">Nome Completo:</label>
+                <input type="text" id="nome" name="nome" required>
+
+                <label for="email">E-mail:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="telefone">Telefone:</label>
+                <input type="tel" id="telefone" name="telefone">
+
+                <label for="data">Data Preferencial:</label>
+                <input type="date" id="data" name="data" required>
+
+                <label for="assunto">Assunto/Especialidade:</label>
+                <select id="assunto" name="assunto">
+                    <option value="clinica_geral">Clínica Geral</option>
+                    <option value="cardiologia">Cardiologia</option>
+                    <option value="outra">Outra</option>
+                </select>
+
+                <button type="submit">Solicitar Agendamento</button>
+            </form>
+        </section>
+
+        <section id="contato">
+            <h2>Fale Conosco</h2>
+            <p>Endereço: Rua da Saúde, 123 - Bairro Central</p>
+            <p>Telefone: (XX) XXXX-XXXX</p>
+            <p>E-mail: contato@nomedohospital.com.br</p>
+            </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2023 Nome do Hospital. Todos os direitos reservados.</p>
+        <p><a href="#">Política de Privacidade</a> | <a href="#">Termos de Uso</a></p>
+    </footer>
+
+</body>
+</html>
