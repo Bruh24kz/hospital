@@ -1,173 +1,144 @@
-/* ======================================================= */
-/* ESTILOS GERAIS E RESET */
-/* ======================================================= */
+/*
+ * style.css
+ * Estilos básicos para um website de Hospital ou Clínica
+ */
 
-/* Reseta margens e preenchimentos padrão e define box-sizing */
-* {
+:root {
+    /* Definição das variáveis de cor */
+    --cor-principal: #007BFF;       /* Azul primário (confiança, profissionalismo) */
+    --cor-secundaria: #28a745;    /* Verde (saúde, calma) */
+    --cor-fundo: #f8f9fa;           /* Cinza muito claro (limpeza) */
+    --cor-texto-principal: #212529; /* Preto/Cinza escuro */
+    --cor-texto-claro: #ffffff;     /* Branco */
+    --sombra-padrao: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos globais */
+body {
+    font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto-principal);
+    line-height: 1.6;
 }
 
-/* Define a fonte, cor de fundo e cor base do texto para o corpo da página */
-body {
-    font-family: 'Roboto', Arial, sans-serif; /* Use uma fonte moderna e legível */
-    line-height: 1.6; /* Altura da linha para melhor leitura */
-    background-color: #f4f8fa; /* Cor de fundo suave */
-    color: #333; /* Cor do texto principal */
-}
-
-/* Container principal para centralizar o conteúdo */
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-}
-
-/* ======================================================= */
-/* TIPOGRAFIA */
-/* ======================================================= */
-
-h1, h2, h3, h4, h5, h6 {
-    font-family: 'Lato', sans-serif; /* Uma fonte um pouco diferente para títulos */
-    color: #1a535c; /* Cor do título */
+/* Tipografia */
+h1, h2, h3 {
+    color: var(--cor-principal);
+    margin-top: 0;
     margin-bottom: 0.5em;
-    line-height: 1.2;
+    font-weight: 600;
 }
 
 h1 { font-size: 2.5em; }
 h2 { font-size: 2em; }
-h3 { font-size: 1.75em; }
-h4 { font-size: 1.5em; }
+h3 { font-size: 1.5em; }
 
-p {
-    margin-bottom: 1em;
+/* Cabeçalho (Header) */
+.cabecalho {
+    background-color: var(--cor-texto-claro);
+    color: var(--cor-principal);
+    padding: 15px 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: var(--sombra-padrao);
 }
 
-a {
-    color: #2196f3; /* Cor dos links */
-    text-decoration: none; /* Remove sublinhado padrão */
-    transition: color 0.3s ease; /* Efeito de transição suave */
-}
-
-a:hover {
-    color: #1565c0; /* Escurece a cor no hover */
-}
-
-/* ======================================================= */
-/* BOTÕES */
-/* ======================================================= */
-
-.btn {
-    display: inline-block;
-    padding: 12px 24px;
-    border-radius: 5px;
-    font-weight: bold;
-    text-transform: uppercase;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    border: none;
-    cursor: pointer;
-}
-
-/* Botão principal (para agendamentos, etc.) */
-.btn-primary {
-    background-color: #2196f3;
-    color: #fff;
-}
-
-/* Botão secundário (para informações, etc.) */
-.btn-secondary {
-    background-color: #4caf50;
-    color: #fff;
-}
-
-.btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* ======================================================= */
-/* SEÇÕES E COMPONENTES */
-/* ======================================================= */
-
-/* Estilo para o cabeçalho */
-.header {
-    background-color: #fff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    padding: 20px 0;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-}
-
-.header .logo {
+.logo {
     font-size: 1.8em;
     font-weight: bold;
-    color: #1a535c;
+    text-transform: uppercase;
 }
 
-.header nav ul {
+/* Menu de Navegação */
+.nav-menu ul {
     list-style: none;
+    padding: 0;
+    margin: 0;
     display: flex;
-    gap: 20px;
 }
 
-.header nav a {
-    color: #555;
+.nav-menu ul li {
+    margin-left: 20px;
+}
+
+.nav-menu ul li a {
+    text-decoration: none;
+    color: var(--cor-texto-principal);
+    font-weight: 500;
+    padding: 5px 10px;
+    transition: color 0.3s, border-bottom 0.3s;
+}
+
+.nav-menu ul li a:hover {
+    color: var(--cor-principal);
+    border-bottom: 2px solid var(--cor-principal);
+}
+
+/* Seções Principais (Container) */
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+/* Botões */
+.botao-principal {
+    background-color: var(--cor-principal);
+    color: var(--cor-texto-claro);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 1em;
     font-weight: bold;
+    transition: background-color 0.3s, transform 0.1s;
 }
 
-.section {
-    padding: 60px 0;
+.botao-principal:hover {
+    background-color: #0056b3; /* Um azul um pouco mais escuro */
 }
 
-.section.bg-light {
-    background-color: #eef5f7;
+.botao-secundario {
+    background-color: var(--cor-secundaria);
+    color: var(--cor-texto-claro);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 1em;
+    font-weight: bold;
+    transition: background-color 0.3s;
 }
 
-/* Cartões de serviço ou informações */
-.card {
-    background-color: #fff;
+.botao-secundario:hover {
+    background-color: #1e7e34; /* Um verde um pouco mais escuro */
+}
+
+
+/* Cartões de Informação/Serviços */
+.cartao {
+    background-color: var(--cor-texto-claro);
+    padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
-    padding: 30px;
+    box-shadow: var(--sombra-padrao);
+    margin-bottom: 20px;
+    border-top: 5px solid var(--cor-principal); /* Borda de destaque */
+}
+
+/* Rodapé (Footer) */
+.rodape {
+    background-color: var(--cor-principal);
+    color: var(--cor-texto-claro);
     text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 20px 0;
+    margin-top: 40px;
 }
 
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-}
-
-/* Estilo do rodapé */
-.footer {
-    background-color: #1a535c;
-    color: #fff;
-    padding: 40px 0;
-    text-align: center;
-}
-
-.footer .social-icons a {
-    color: #fff;
-    font-size: 1.5em;
-    margin: 0 10px;
-}
-
-/* ======================================================= */
-/* RESPONSIVIDADE BÁSICA */
-/* ======================================================= */
-
-@media (max-width: 768px) {
-    .header nav ul {
-        flex-direction: column;
-        text-align: center;
-        margin-top: 15px;
-    }
-
-    .header nav a {
-        padding: 10px 0;
-        display: block;
-        border-bottom: 1px solid #eee;
-    }
+.rodape p {
+    margin: 0;
 }
