@@ -1,110 +1,133 @@
-// ===============================================
-// 1. Configuração Inicial e Seletores DOM
-// ===============================================
-
-// Seleciona o formulário pelo seu ID (precisa adicionar id="agendamento-form" no HTML)
-const formularioAgendamento = document.getElementById('agendamento-form');
-
-// Se o formulário for encontrado, adicionamos um "ouvinte" de evento
-if (formularioAgendamento) {
-    // Adiciona um ouvinte para o evento 'submit' (quando o usuário clica em Enviar)
-    formularioAgendamento.addEventListener('submit', function(event) {
-        // Previne o comportamento padrão de recarregar a página
-        event.preventDefault(); 
-        
-        // Chama a função de validação e processamento
-        processarAgendamento(event.target);
-    });
-}
-
+/**
+ * Módulo de Agendamento (Backend - Node.js/Express-like)
+ *
+ * Objetivo: Receber os dados do formulário de agendamento (via POST),
+ * validar e retornar uma resposta JSON apropriada.
+ */
 
 // ===============================================
-// 2. Função de Validação e Processamento
+// 1. Função de Validação (Coração da Lógica)
 // ===============================================
 
-function processarAgendamento(form) {
+/**
+ * Valida os dados de agendamento recebidos de uma requisição HTTP.
+ * @param {object} dados - O corpo da requisição (body) contendo nome, email, data, assunto.
+ * @returns {{isValid: boolean, mensagemErro: string}} O resultado da validação.
+ */
+function validarAgendamento(dados) {
     // Pega os valores dos campos
-    const nome = form.nome.value.trim();
-    const email = form.email.value.trim();
-    const data = form.data.value.trim();
-    const assunto = form.assunto.value;
+    const nome = dados.nome ? String(dados.nome).trim() : '';
+    const email = dados.email ? String(dados.email).trim() : '';
+    const data = dados.data ? String(dados.data).trim() : '';
+    const assunto = dados.assunto ? String(dados.assunto) : '';
 
     let isValid = true;
-    let mensagemErro = '';
+    let mensagemErro = [];
 
-    // Validação básica
+    // Validação básica de presença
     if (nome === '') {
         isValid = false;
-        mensagemErro += 'O campo Nome é obrigatório.\n';
+        mensagemErro.push('O campo Nome é obrigatório.');
     }
 
-    if (email === '' || !email.includes('@')) {
+    // Validação de Email
+    // Expressão regular simples para verificar o formato básico do email
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (email === '' || !emailRegex.test(email)) {
         isValid = false;
-        mensagemErro += 'Por favor, insira um Email válido.\n';
+        mensagemErro.push('Por favor, insira um Email válido.');
     }
 
+    // Validação de Data
     if (data === '') {
         isValid = false;
-        mensagemErro += 'A Data Preferencial é obrigatória.\n';
-    }
-    
-    // Verifica se a data é futura (ou hoje)
-    const hoje = new Date().setHours(0, 0, 0, 0);
-    const dataSelecionada = new Date(data).setHours(0, 0, 0, 0);
-    
-    if (dataSelecionada < hoje) {
-         isValid = false;
-         mensagemErro += 'A data de agendamento deve ser hoje ou uma data futura.\n';
-    }
-
-
-    // ===============================================
-    // 3. Resultado do Processamento
-    // ===============================================
-    
-    if (isValid) {
-        // Se a validação for bem-sucedida, simula o envio de dados
-
-        console.log('--- Dados Enviados ---');
-        console.log(`Nome: ${nome}`);
-        console.log(`Email: ${email}`);
-        console.log(`Data: ${data}`);
-        console.log(`Especialidade: ${assunto}`);
-        console.log('----------------------');
-
-        // Feedback visual para o usuário
-        alert(`Solicitação de agendamento enviada!
-        Aguarde nosso contato no e-mail: ${email}
-        Obrigado por escolher o Nome do Hospital.`);
-        
-        // Limpa o formulário após o sucesso
-        form.reset();
-
+        mensagemErro.push('A Data Preferencial é obrigatória.');
     } else {
-        // Se houver erros, exibe a mensagem de erro
-        alert('Erro no Agendamento:\n\n' + mensagemErro);
+        // Verifica se a data é futura (ou hoje)
+        const hoje = new Date();
+        hoje.setHours(0, 0, 0, 0); // Zera a hora para comparação
+        
+        const dataSelecionada = new Date(data);
+        dataSelecionada.setHours(0, 0, 0, 0); // Zera a hora para comparação
+
+        // Verifica se a data é inválida (ex: '2023-99-99')
+        if (isNaN(dataSelecionada.getTime())) {
+             isValid = false;
+             mensagemErro.push('O formato da Data é inválido.');
+        } else if (dataSelecionada < hoje) {
+            isValid = false;
+            mensagemErro.push('A data de agendamento deve ser hoje ou uma data futura.');
+        }
     }
+    
+    // Validação de Assunto (Especialidade)
+    if (assunto === '' || assunto === 'Escolha a Especialidade') {
+        isValid = false;
+        mensagemErro.push('Por favor, escolha uma Especialidade válida.');
+    }
+
+    return {
+        isValid: isValid,
+        mensagemErro: mensagemErro.join('\n')
+    };
 }
 
 
 // ===============================================
-// 4. Efeito Visual: Alerta de Emergência
-// (Um pequeno toque de interatividade extra)
+// 2. Controlador de Rota HTTP (Simulação Express)
 // ===============================================
 
-// Simula um alerta de emergência que aparece após 5 segundos
-window.onload = function() {
-    setTimeout(function() {
-        console.log("Alerta de script: Pronto-Socorro 24 Horas Ativo!");
-        // Você poderia adicionar aqui código para mostrar um pop-up ou barra de alerta
-        
-        // Exemplo de como modificar um elemento dinamicamente (se você tiver um elemento com id="status-emergencia")
-        const statusElemento = document.getElementById('status-emergencia');
-        if (statusElemento) {
-            statusElemento.textContent = "PRONTO-SOCORRO 24H - ATIVO";
-            statusElemento.style.backgroundColor = 'red';
-            statusElemento.style.color = 'white';
-        }
+/**
+ * Função de tratamento da rota POST /agendamento
+ * (Simula um controlador de rota em um framework como Express ou NestJS)
+ *
+ * @param {object} req - Objeto de Requisição (contém os dados do corpo)
+ * @param {object} res - Objeto de Resposta (usado para enviar o resultado)
+ */
+function handleAgendamentoPost(req, res) {
+    const dadosAgendamento = req.body; // Assume que o body parser já transformou o body em objeto JS
 
-    }, 5000); // 5000 milissegundos = 5 segundos
-};
+    const { isValid, mensagemErro } = validarAgendamento(dadosAgendamento);
+
+    if (isValid) {
+        // LOGICA DE NEGÓCIO DO BACKEND:
+        // 1. Salvar os dados no banco de dados (MongoDB, PostgreSQL, etc.)
+        // 2. Enviar um e-mail de confirmação para o paciente (via SendGrid, Nodemailer, etc.)
+        // 3. Notificar o sistema de gestão hospitalar.
+
+        console.log('✅ Agendamento Válido. Simulação de Salvar no DB:', dadosAgendamento);
+
+        // Retorna sucesso (Status 200 OK ou 201 Created)
+        res.status(200).json({
+            sucesso: true,
+            mensagem: 'Solicitação de agendamento recebida com sucesso. Verifique seu e-mail.',
+            dadosRecebidos: dadosAgendamento
+        });
+
+    } else {
+        // Retorna erro (Status 400 Bad Request)
+        console.log('❌ Erro de Validação:', mensagemErro);
+
+        res.status(400).json({
+            sucesso: false,
+            mensagem: 'Erro de validação. Por favor, corrija os campos.',
+            detalhesErro: mensagemErro
+        });
+    }
+}
+
+
+// Exemplo de como esta função seria integrada a um servidor Express
+/*
+const express = require('express');
+const app = express();
+app.use(express.json()); // Habilita body-parser
+
+app.post('/agendamento', handleAgendamentoPost);
+
+app.listen(3000, () => {
+    console.log('Servidor rodando na porta 3000');
+});
+*/
+
+// Para fins de teste (não faz
